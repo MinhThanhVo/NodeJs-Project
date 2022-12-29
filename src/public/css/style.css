@@ -1,0 +1,8 @@
+html {
+  font-size: 40px;
+  font-family: "Times New Roman", Times, serif;
+}
+h1 {
+  color: red;
+  border: 1px solid yellow;
+}
