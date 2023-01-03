@@ -24,12 +24,29 @@ let getHomepage = async (req, res) => {
 };
 let getDetailPage = async (req, res) => {
   let userId = req.params.id;
-  let [user] = await pool.execute(`SELECT * FROM users WHERE id = ?`, [userId]);
+  let [user] = await pool.execute("SELECT * FROM `users` WHERE `id` = ?", [
+    userId,
+  ]);
+
   // console.log(user);
   // console.log("Check res params:", req.params );
   return res.send(JSON.stringify(user));
 };
+let getCreateNewUser = async (req, res) => {
+  //console.log("Check req:", req.body);
+  let { firstName, lastName, email, address } = req.body;
+  // let firstName = req.body.firsrName;
+  // let lastName = req.body.lastName;
+  // let email = req.body.email;
+  // let address = req.body.address;
+  await pool.execute(
+    "INSERT INTO users(`firstName`, `lastName`, `email`, `address`) VALUES (?, ?, ?, ?)",
+    [firstName, lastName, email, address]
+  );
+  return res.redirect("/");
+};
 module.exports = {
   getHomepage,
   getDetailPage,
+  getCreateNewUser,
 };
