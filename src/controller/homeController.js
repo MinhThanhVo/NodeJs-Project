@@ -1,24 +1,7 @@
 import pool from "../config/connectDB";
+import multer from "multer";
+
 let getHomepage = async (req, res) => {
-  // logic MVC
-  // let data = [];
-  // connection.query("SELECT * FROM `users`", function (err, results, fields) {
-  //   // console.log("Connection suess!!!");
-  //   // console.log(results);
-  //   results.map((row) => {
-  //     //return row;
-  //     data.push({
-  //       id: row.id,
-  //       firstName: row.firstName,
-  //       lastName: row.lastName,
-  //       email: row.Email,
-  //       address: row.Address,
-  //     });
-  //   });
-  //   //console.log(">>> check data ", data);
-  //   //return res.render("index.ejs", { dataUser: data });
-  //   // console.log(rows);
-  // });
   const [rows, fields] = await pool.execute("SELECT * FROM `users`");
   return res.render("index.ejs", { dataUser: rows });
 };
@@ -27,18 +10,10 @@ let getDetailPage = async (req, res) => {
   let [user] = await pool.execute("SELECT * FROM `users` WHERE `id` = ?", [
     userId,
   ]);
-
-  // console.log(user);
-  // console.log("Check res params:", req.params );
   return res.send(JSON.stringify(user));
 };
 let getCreateNewUser = async (req, res) => {
-  //console.log("Check req:", req.body);
   let { firstName, lastName, email, address } = req.body;
-  // let firstName = req.body.firsrName;
-  // let lastName = req.body.lastName;
-  // let email = req.body.email;
-  // let address = req.body.address;
   await pool.execute(
     "INSERT INTO users(`firstName`, `lastName`, `email`, `address`) VALUES (?, ?, ?, ?)",
     [firstName, lastName, email, address]
@@ -63,6 +38,27 @@ let postUpdateUser = async (req, res) => {
   );
   return res.redirect("/");
 };
+
+let getUploadFile = async (req, res) => {
+  return res.render("uploadFile.ejs");
+};
+//const upload = multer().single("profile_pic");
+let handleUploadFile = async (req, res) => {
+  upload(req, res, function (err) {
+    if (req.fileValidationError) {
+      return res.send("Loi_1", req.fileValidationError);
+    } else if (!req.file) {
+      return res.send("Please select an image to upload!");
+    } else if (err instanceof multer.MulterError) {
+      return res.send("Loi_2", err);
+    } else if (err) {
+      return res.send("Loi_3", err);
+    }
+    res.send(
+      `You have upload this image: <hr><img src = "/image/${req.file.filename}" width= "500px"><hr/><a href = "/upload">Upload another image</a>`
+    );
+  });
+};
 module.exports = {
   getHomepage,
   getDetailPage,
@@ -70,4 +66,6 @@ module.exports = {
   deleteUser,
   getEditPage,
   postUpdateUser,
+  getUploadFile,
+  handleUploadFile,
 };

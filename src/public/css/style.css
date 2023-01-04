@@ -46,3 +46,9 @@ body {
 .btn-save {
   margin-top: 15px;
 }
+.upload-file-container {
+  padding: 15px;
+}
+.upload-file-container label {
+  display: block;
+}
