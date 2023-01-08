@@ -43,7 +43,7 @@ let getUploadFile = async (req, res) => {
   return res.render("uploadFile.ejs");
 };
 const upload = multer().single("profile_pic");
-const upload1 = multer().array("multiple-images", 5);
+const upload1 = multer().array("multiple_images", 5);
 
 let handleUploadFile = async (req, res) => {
   upload(req, res, function (err) {

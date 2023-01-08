@@ -42,7 +42,7 @@ const initWebRoute = (app) => {
     getHomeController.handleUploadFile
   );
   router.post(
-    "/upload-multiple-images",
+    "/upload-multiple_images",
     (req, res, next) => {
       uploadMultipleFiles(req, res, (err) => {
         if (
