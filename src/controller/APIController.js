@@ -1,4 +1,5 @@
 import pool from "../config/connectDB";
+// API all user
 let getAllUsers = async (req, res) => {
   const [rows, fields] = await pool.execute("SELECT * FROM `users`");
   return res.status(200).json({
@@ -6,6 +7,7 @@ let getAllUsers = async (req, res) => {
     data: rows,
   });
 };
+// API create user.
 let createNewUser = async (req, res) => {
   let { firstName, lastName, email, address } = req.body;
   if (!firstName || !lastName || !email || !address) {
@@ -21,6 +23,7 @@ let createNewUser = async (req, res) => {
     message: "Add user sucess!!!",
   });
 };
+//API Update user
 let updateUser = async (req, res) => {
   let { firstName, lastName, email, address, id } = req.body;
   if (!firstName || !lastName || !email || !address || !id) {
@@ -36,6 +39,7 @@ let updateUser = async (req, res) => {
     message: "Update sucess !",
   });
 };
+//API delete user
 let deleteUser = async (req, res) => {
   let userId = req.params.id;
   if (!userId) {
